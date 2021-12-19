@@ -7,16 +7,24 @@
     <h3>{{ title }}</h3>
     <h3>{{ description }}</h3>
     <button @click="setAge">Change age</button>
+    <div>
+      <input type="text" placeholder="First Name" v-model="firstName" />
+      <input type="text" placeholder="Last Name" v-model="lastName" />
+      <!-- <input type="text" placeholder="First Name" @input="setFirstName" />
+      <input type="text" placeholder="Last Name" @input="setLastName" /> -->
+    </div>
   </section>
 </template>
 
 <script>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
 export default {
   setup() {
     // const userName = 'MaximilianR';
-    const userName = ref('Maximilian');
+    // const userName = ref('Maximilian');
+    const firstName = ref('');
+    const lastName = ref('');
     const age = ref(31);
     const user = reactive({
       name: 'Esteban',
@@ -26,6 +34,25 @@ export default {
       title: ref('This is a title'),
       description: ref('This is a description')
     };
+
+    const userName = computed(() => {
+      return `${firstName.value} ${lastName.value}`;
+    });
+
+    watch([age, userName], (newValues, oldValues) => {
+      console.log('Age or username changed');
+      // console.log('newValues', newValues);
+      // console.log('oldValues', oldValues);
+      console.log('Old age', oldValues[0]);
+      console.log('New age', newValues[0]);
+      console.log('Old username', oldValues[1]);
+      console.log('New username', newValues[1]);
+    });
+    // watch(age, (newValue, oldValue) => {
+    //   console.log('Age changed');
+    //   console.log('newValue', newValue);
+    //   console.log('oldValue', oldValue);
+    // });
 
     // setTimeout(() => {
     //   userName.value = 'Max';
@@ -37,6 +64,14 @@ export default {
       age.value = age.value + 1;
     };
 
+    const setFirstName = (e) => {
+      firstName.value = e.target.value;
+    };
+
+    const setLastName = (e) => {
+      lastName.value = e.target.value;
+    };
+
     return {
       userName,
       age,
@@ -44,12 +79,26 @@ export default {
       title: test.title,
       description: test.description,
       setAge,
+      setFirstName,
+      setLastName,
+      firstName,
+      lastName,
     };
-  }
+  },
   // data() {
   //   return {
   //     userName: 'Maximilian',
   //   };
+  // },
+  // methods: {
+  //   setNewAge() {
+  //     this.age = this.age + 1;
+  //   }
+  // },
+  // watch: {
+  //   age(newAge) {
+  //     console.log(`Age changed to ${newAge}`);
+  //   }
   // },
 };
 </script>

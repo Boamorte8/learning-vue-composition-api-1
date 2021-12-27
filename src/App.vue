@@ -1,7 +1,8 @@
 <template>
   <section class="container">
-    <h2>{{ userName }}</h2>
-    <h3>{{ age }}</h3>
+    <!-- <h2>{{ userName }}</h2>
+    <h3>{{ age }}</h3> -->
+    <user-data :first-name="firstName" :last-name="lastName" class="test"></user-data>
     <h2>{{ user.name }}</h2>
     <h3>{{ user.age }}</h3>
     <h3>{{ title }}</h3>
@@ -19,9 +20,19 @@
 </template>
 
 <script>
-import { computed, reactive, ref, watch } from 'vue';
+import {
+  computed,
+  provide,
+  reactive,
+  ref,
+  watch,
+} from 'vue';
+import UserData from './components/UserData.vue';
 
 export default {
+  components: {
+    UserData,
+  },
   setup() {
     // const userName = 'MaximilianR';
     // const userName = ref('Maximilian');
@@ -37,6 +48,8 @@ export default {
       title: ref('This is a title'),
       description: ref('This is a description')
     };
+
+    provide('userAge', age);
 
     const userName = computed(() => {
       return `${firstName.value} ${lastName.value}`;
